@@ -3,7 +3,7 @@ import { collection, onSnapshot, addDoc, serverTimestamp } from "firebase/firest
 import { db } from "../firebase";
 import Navbar from "../components/Navbar";
 import Button from "@/components/Ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/Ui/card";
 import Input from "@/components/Ui/input";
 
 export default function TickCinema() {
