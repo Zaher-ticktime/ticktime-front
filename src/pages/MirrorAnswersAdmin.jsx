@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import Navbar from "../components/Navbar";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/Ui/card";
 
 export default function MirrorAnswersAdmin() {
   const [answers, setAnswers] = useState([]);

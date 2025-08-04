@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Navbar from "../components/Navbar";
-import { Card, CardContent } from "@/components/ui/card";
-import Button from "@/components/ui/button";
+import { Card, CardContent } from "@/components/Ui/card";
+import Button from "@/components/Ui/button";
 
 export default function AdminMirrorPanel() {
   const [pendingProjects, setPendingProjects] = useState([]);
