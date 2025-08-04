@@ -39,7 +39,7 @@ const PostUpload = ({ onUpload }) => {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md text-black">
-      <h2 className="text-lg font-bold mb-2">📤 ارسال پست جدید</h2>
+      <h2 className="text-lg font-bold mb-2">📤 New Post</h2>
       <input type="file" accept="image/*,video/*" onChange={handleFileChange} className="mb-2" />
       {file && (
         <div className="mb-2">
@@ -53,22 +53,22 @@ const PostUpload = ({ onUpload }) => {
       <textarea
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
-        placeholder="توضیح بنویس..."
+        placeholder="Write a caption..."
         className="w-full p-2 border rounded mb-2"
       />
       <div className="flex items-center space-x-4 mb-3">
         <label className="flex items-center">
           <input type="checkbox" checked={showInFeed} onChange={() => setShowInFeed(!showInFeed)} />
-          <span className="ml-1">نمایش در Feed</span>
+          <span className="ml-1">Show in Feed</span>
         </label>
         <label className="flex items-center">
           <input type="checkbox" checked={showInStory} onChange={() => setShowInStory(!showInStory)} />
-          <span className="ml-1">نمایش در Story</span>
+          <span className="ml-1">Show in Story</span>
         </label>
       </div>
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">ارسال</button>
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Post</button>
     </form>
   );
 };
 
-export default PostUpload
+export default PostUpload;
