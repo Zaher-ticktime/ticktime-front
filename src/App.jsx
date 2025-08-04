@@ -57,8 +57,8 @@ export default function App() {
   
   return (
     
-    <Router>
-      <AuthProvider>
+    <AuthProvider>
+       <Navbar />
         <Routes>
          <Route path="/" element={<Layout><WelcomePage /></Layout>} />
          <Route path="/login" element={<Layout><Login /></Layout>} />
@@ -106,9 +106,8 @@ export default function App() {
          <Route path="/admin-cancel" element={isLoggedIn ? <Layout><AdminCancelPanel  /></Layout> : <Navigate to="/" />} />
 
         </Routes>
-      </AuthProvider>
-    </Router>
-    
+      </Router>
+    </AuthProvider>
 
   );
 }
