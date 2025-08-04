@@ -2,12 +2,11 @@ import React from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
-
+import Navbar from "./components/Navbar";
 import WelcomePage from "./pages/WelcomePage";
 import TickTimeApps from "./pages/TickTimeApps";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
 import HomePage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import UserFeed from "./pages/UserFeed";
