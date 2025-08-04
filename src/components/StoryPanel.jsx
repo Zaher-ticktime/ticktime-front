@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { mockStories } from './mockStories';
+import { mockStories } from '../data/mockStories';
 import StoryModal from './StoryModal';
 
 const StoryPanel = () => {

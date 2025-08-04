@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import PostUpload from "./PostUpload";
+import PostUploader from "./PostUploader";
 import CommentModal from "./CommentModal";
 import DislikeModal from "./DislikeModal";
 import ReportModal from "./ReportModal";
