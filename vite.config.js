@@ -11,10 +11,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html')
-      }
+      },
+      external: ['firebase']
     }
   },
-  // 👇 این خط کلیدیه:
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
@@ -22,3 +22,5 @@ export default defineConfig({
   },
   base: '/',
 });
+
+
