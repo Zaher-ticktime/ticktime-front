@@ -1,7 +1,11 @@
-// 📁 src/pages/Register.jsx
 import React, { useState } from "react";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     mobile: "",
@@ -13,6 +17,9 @@ export default function Register() {
     image: null,
   });
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -22,10 +29,30 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registering user:", form);
-    // handle upload to backend or blockchain
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+
+      await sendEmailVerification(userCredential.user);
+
+      setMessage("✅ Registration successful! Please verify your email.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (err) {
+      console.error("Registration error:", err.message);
+      setMessage("❌ " + err.message);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -57,15 +84,25 @@ export default function Register() {
         <label>Profile Picture (meme or real):</label>
         <input type="file" name="image" accept="image/*" onChange={handleChange} style={inputStyle} />
 
-        <button type="submit" style={submitStyle}>✅ Create Profile</button>
+        <button type="submit" disabled={loading} style={submitStyle}>
+          {loading ? "Creating..." : "✅ Create Profile"}
+        </button>
       </form>
 
-      <p style={{ marginTop: "1rem" }}>Already have an account? <a href="/login" style={{ color: "#0cf" }}>Login here</a></p>
+      {message && (
+        <p style={{ marginTop: "1rem", color: message.startsWith("✅") ? "#0f0" : "#f55" }}>
+          {message}
+        </p>
+      )}
+
+      <p style={{ marginTop: "1rem" }}>
+        Already have an account? <a href="/login" style={{ color: "#0cf" }}>Login here</a>
+      </p>
 
       <hr style={{ margin: "2rem 0", borderColor: "#333" }} />
 
       <p style={{ fontSize: "0.9rem", opacity: 0.8 }}>
-        🎉 Welcome to TickTime! <br/>
+        🎉 Welcome to TickTime! <br />
         Start earning Silver TICKs by joining projects, sharing ideas, and interacting with the community.
       </p>
     </div>
