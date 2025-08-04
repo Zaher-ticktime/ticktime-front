@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
-import { Card, CardContent } from "@/components/ui/card";
-import Button from "@/components/ui/button";
+import { Card, CardContent } from "@/components/Ui/card";
+import Button from "@/components/Ui/button";
 import Navbar from "../components/Navbar";
 
 const GT_RATE = 2.5;
