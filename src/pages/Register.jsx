@@ -30,30 +30,28 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+   e.preventDefault();
+   console.log("📤 Submitting form:", form);
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
+   try {
+     const userCredential = await createUserWithEmailAndPassword(
+       auth,
+       form.email,
+       form.password
+     );
+     console.log("✅ User created:", userCredential.user);
 
-      await sendEmailVerification(userCredential.user);
+     await sendEmailVerification(userCredential.user);
+     console.log("📧 Email verification sent");
 
-      setMessage("✅ Registration successful! Please verify your email.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    } catch (err) {
-      console.error("Registration error:", err.message);
-      setMessage("❌ " + err.message);
-    }
+     alert("✅ Please verify your email.");
+     navigate("/login");
+   } catch (err) {
+     console.error("❌ Registration error:", err.message);
+     alert(err.message);
+   }
+ };
 
-    setLoading(false);
-  };
 
   return (
     <div style={{ maxWidth: "600px", margin: "2rem auto", padding: "2rem", background: "#111", borderRadius: "10px", color: "#fff" }}>
