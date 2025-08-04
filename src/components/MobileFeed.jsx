@@ -1,4 +1,4 @@
-// MobileFeed.jsx (Final Version with Full Meme System)
+
 import React, { useState, useEffect } from "react";
 import PostUpload from "./PostUpload";
 import CommentModal from "./CommentModal";
@@ -26,10 +26,8 @@ const StoryBar = ({ stories }) => {
 
 const MobileFeed = () => {
   const [posts, setPosts] = useState(() => {
-    const saved = localStorage.getItem("tick_posts");
-    return saved ? JSON.parse(saved) : [
-      { id: 1, username: "amirali77", text: "My first post on TickTime 😍", image: "https://placekitten.com/400/300" }
-    ];
+    const saved = localStorage.getItem("tick_mobile_posts");
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [comments, setComments] = useState(() => JSON.parse(localStorage.getItem("tick_comments") || "{}"));
@@ -54,13 +52,17 @@ const MobileFeed = () => {
     { username: "Nima", avatar: "https://placekitten.com/102/100" },
   ];
 
-  useEffect(() => localStorage.setItem("tick_posts", JSON.stringify(posts)), [posts]);
+  useEffect(() => localStorage.setItem("tick_mobile_posts", JSON.stringify(posts)), [posts]);
   useEffect(() => localStorage.setItem("tick_comments", JSON.stringify(comments)), [comments]);
   useEffect(() => localStorage.setItem("tick_rewarded_comments", JSON.stringify(rewardedComments)), [rewardedComments]);
   useEffect(() => localStorage.setItem("tick_memes", JSON.stringify(memePowers)), [memePowers]);
 
   const handleAddPost = (newPost) => {
-    const fullPost = { id: Date.now(), username: "You", ...newPost };
+    const fullPost = {
+      id: Date.now(),
+      username: "You",
+      ...newPost
+    };
     setPosts([fullPost, ...posts]);
   };
 
@@ -123,7 +125,18 @@ const MobileFeed = () => {
       {posts.map((post) => (
         <div key={post.id} className="p-3 border-b">
           <div className="font-semibold mb-2">@{post.username}</div>
-          <img src={post.image} alt="post" className="w-full h-auto rounded-xl mb-2" />
+
+          {post.fileType === "image" && post.fileUrl && (
+            <img src={post.fileUrl} alt="post" className="w-full h-auto rounded-xl mb-2" />
+          )}
+          {post.fileType === "video" && post.fileUrl && (
+            <video src={post.fileUrl} controls className="w-full h-auto rounded-xl mb-2" />
+          )}
+
+          {post.image && !post.fileUrl && (
+            <img src={post.image} alt="post" className="w-full h-auto rounded-xl mb-2" />
+          )}
+
           <p className="mb-2 text-sm">{post.text}</p>
 
           <div className="flex flex-wrap gap-2 text-sm mb-2">
@@ -131,7 +144,6 @@ const MobileFeed = () => {
             <button className="text-blue-500" onClick={() => setActiveCommentPost(post.id)}>💬 Comment</button>
             <button className="text-yellow-600" onClick={() => setActiveMemePost(post.id)}>🤯 Meme</button>
             <button className="text-green-600" onClick={() => setActiveSendMemePost(post.id)}>🪙 Send Meme</button>
-            <button className="text-gray-600">💾 Save</button>
             <button className="text-gray-400" onClick={() => setActiveDislikePost(post.id)}>👎 Dislike</button>
             <button className="text-black" onClick={() => setActiveReportPost(post.id)}>🚩 Report</button>
           </div>
@@ -180,7 +192,7 @@ const MobileFeed = () => {
   );
 };
 
-export default MobileFeed;
+export default MobileFeedeed;
 
 
 

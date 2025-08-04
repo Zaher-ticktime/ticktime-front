@@ -1,67 +1,74 @@
-// src/components/PostUpload.jsx
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const PostUpload = ({ onClose, onSubmit }) => {
-  const [text, setText] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
+const PostUploader = ({ onUpload }) => {
+  const [file, setFile] = useState(null);
+  const [caption, setCaption] = useState("");
+  const [showInFeed, setShowInFeed] = useState(true);
+  const [showInStory, setShowInStory] = useState(false);
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFileUrl(URL.createObjectURL(file));
+    const uploaded = e.target.files[0];
+    if (uploaded) {
+      setFile(uploaded);
     }
   };
 
-  const handleSubmit = () => {
-    if (text && fileUrl) {
-      onSubmit({ text, image: fileUrl });
-      setText("");
-      setFileUrl("");
-      onClose();
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!file || (!showInFeed && !showInStory)) return;
+
+    const post = {
+      id: Date.now().toString(),
+      fileUrl: URL.createObjectURL(file),
+      fileType: file.type.startsWith('video') ? 'video' : 'image',
+      caption,
+      showInFeed,
+      showInStory,
+      timestamp: new Date().toISOString()
+    };
+
+    if (onUpload) onUpload(post);
+
+    setFile(null);
+    setCaption("");
+    setShowInFeed(true);
+    setShowInStory(false);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white p-5 rounded-xl w-11/12 max-w-md">
-        <h2 className="text-lg font-bold mb-3">Create New Post</h2>
-
-        <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={handleFileChange}
-          className="mb-3"
-        />
-        {fileUrl && (
-          <img
-            src={fileUrl}
-            alt="preview"
-            className="w-full h-auto rounded mb-3"
-          />
-        )}
-
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Write something..."
-          className="w-full p-2 border rounded mb-3"
-        ></textarea>
-
-        <div className="flex justify-end gap-3">
-          <button onClick={onClose} className="text-gray-500">
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white px-4 py-1 rounded"
-          >
-            Post
-          </button>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md text-black">
+      <h2 className="text-lg font-bold mb-2">📤 ارسال پست جدید</h2>
+      <input type="file" accept="image/*,video/*" onChange={handleFileChange} className="mb-2" />
+      {file && (
+        <div className="mb-2">
+          {file.type.startsWith('video') ? (
+            <video src={URL.createObjectURL(file)} controls className="w-full max-h-64 rounded" />
+          ) : (
+            <img src={URL.createObjectURL(file)} alt="preview" className="w-full max-h-64 object-contain rounded" />
+          )}
         </div>
+      )}
+      <textarea
+        value={caption}
+        onChange={(e) => setCaption(e.target.value)}
+        placeholder="توضیح بنویس..."
+        className="w-full p-2 border rounded mb-2"
+      />
+      <div className="flex items-center space-x-4 mb-3">
+        <label className="flex items-center">
+          <input type="checkbox" checked={showInFeed} onChange={() => setShowInFeed(!showInFeed)} />
+          <span className="ml-1">نمایش در Feed</span>
+        </label>
+        <label className="flex items-center">
+          <input type="checkbox" checked={showInStory} onChange={() => setShowInStory(!showInStory)} />
+          <span className="ml-1">نمایش در Story</span>
+        </label>
       </div>
-    </div>
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">ارسال</button>
+    </form>
   );
 };
 
-export default PostUpload;
+export default PostUploade

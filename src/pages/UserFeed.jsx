@@ -1,93 +1,137 @@
-// UserFeed.jsx نسخه کامل شده با امکانات اقتصادی
+
 import React, { useState, useEffect } from "react";
-import StoryBar from "../components/StoryBar";
+import StoryPanel from "../components/StoryPanel";
+import PostUploader from "../components/PostUploader";
 import PostCard from "../components/PostCard";
-import Navbar from "../components/Navbar";
-import { toast } from "react-hot-toast";
 
-const mockPosts = [
-  {
-    id: "post1",
-    author: "Ali",
-    content: "Check out this new update!",
-    image: "https://via.placeholder.com/400x200",
-  },
-  {
-    id: "post2",
-    author: "Mina",
-    content: "Feeling great today 💫",
-    image: "https://via.placeholder.com/400x200",
-  },
-];
+const UserFeed = () => {
+  const [posts, setPosts] = useState(() => {
+    const saved = localStorage.getItem("tick_desktop_posts");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-export default function UserFeed() {
-  const [likedPosts, setLikedPosts] = useState([]);
-  const [dislikedPosts, setDislikedPosts] = useState([]);
-  const [savedPosts, setSavedPosts] = useState([]);
-  const [sharedPosts, setSharedPosts] = useState([]);
-  const [reportedPosts, setReportedPosts] = useState([]);
+  const [comments, setComments] = useState(() => JSON.parse(localStorage.getItem("tick_comments") || "{}"));
+  const [rewardedComments, setRewardedComments] = useState(() => JSON.parse(localStorage.getItem("tick_rewarded_comments") || "{}"));
+  const [likedPosts, setLikedPosts] = useState(() => JSON.parse(localStorage.getItem("tick_likes") || "{}"));
+  const [dislikedPosts, setDislikedPosts] = useState(() => JSON.parse(localStorage.getItem("tick_dislikes") || "{}"));
+  const [memePowers, setMemePowers] = useState(() => JSON.parse(localStorage.getItem("tick_memes") || "{}"));
+  const [rewardMessage, setRewardMessage] = useState("");
+
+  useEffect(() => localStorage.setItem("tick_desktop_posts", JSON.stringify(posts)), [posts]);
+  useEffect(() => localStorage.setItem("tick_comments", JSON.stringify(comments)), [comments]);
+  useEffect(() => localStorage.setItem("tick_rewarded_comments", JSON.stringify(rewardedComments)), [rewardedComments]);
+  useEffect(() => localStorage.setItem("tick_likes", JSON.stringify(likedPosts)), [likedPosts]);
+  useEffect(() => localStorage.setItem("tick_dislikes", JSON.stringify(dislikedPosts)), [dislikedPosts]);
+  useEffect(() => localStorage.setItem("tick_memes", JSON.stringify(memePowers)), [memePowers]);
+
+  const handleNewPost = (newPost) => {
+    setPosts((prev) => [newPost, ...prev]);
+  };
+
+  const handleComment = (postId, comment) => {
+    if (!comment.trim()) return;
+    setComments(prev => ({
+      ...prev,
+      [postId]: [...(prev[postId] || []), comment]
+    }));
+
+    if (!rewardedComments[postId]) {
+      setRewardedComments(prev => ({ ...prev, [postId]: true }));
+      setRewardMessage("🎉 شما ۲ SilverTICK بابت کامنت دریافت کردید!");
+      setTimeout(() => setRewardMessage(""), 3000);
+    }
+  };
 
   const handleLike = (postId) => {
-    if (likedPosts.includes(postId)) return;
-    setLikedPosts([...likedPosts, postId]);
-    toast.success("+1 SilverTICK for Like 💖");
+    if (!likedPosts[postId]) {
+      setLikedPosts(prev => ({ ...prev, [postId]: true }));
+      setRewardMessage("🎉 شما ۱ SilverTICK بابت لایک دریافت کردید!");
+      setTimeout(() => setRewardMessage(""), 3000);
+    }
   };
 
   const handleDislike = (postId) => {
-    if (dislikedPosts.includes(postId)) return;
-    setDislikedPosts([...dislikedPosts, postId]);
-    toast("Disliked. No reward unless justified.");
-  };
-
-  const handleSave = (postId) => {
-    if (savedPosts.includes(postId)) return;
-    setSavedPosts([...savedPosts, postId]);
-    toast.success("Post saved 💾");
-  };
-
-  const handleShare = (postId) => {
-    if (sharedPosts.includes(postId)) return;
-    setSharedPosts([...sharedPosts, postId]);
-    toast.success("+3 SilverTICK for Share 🔁");
-  };
-
-  const handleReport = (postId) => {
-    if (reportedPosts.includes(postId)) return;
-    const reason = prompt("Why are you reporting this post?");
-    if (!reason || reason.length < 3) {
-      toast.error("Report not submitted. Reason required.");
-      return;
+    if (!dislikedPosts[postId]) {
+      setDislikedPosts(prev => ({ ...prev, [postId]: true }));
+      setRewardMessage("👎 دیسلایک ثبت شد (بدون پاداش مگر با دلیل)");
+      setTimeout(() => setRewardMessage(""), 3000);
     }
-    setReportedPosts([...reportedPosts, postId]);
-    toast.success("Thanks for reporting. We'll review it 🚩");
+  };
+
+  const handleSendMeme = (postId, power = 500) => {
+    const reward = Math.floor(power / 500) * 2;
+    setMemePowers(prev => ({
+      ...prev,
+      [postId]: (prev[postId] || 0) + power
+    }));
+    if (reward > 0) {
+      setRewardMessage(`🧠 شما ${reward} SilverTICK بابت Meme دریافت کردید!`);
+      setTimeout(() => setRewardMessage(""), 3000);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-24">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">📣 Feed Loaded</h2>
+    <div className="min-h-screen bg-white text-black">
+      <div className="max-w-2xl mx-auto px-4 pb-24">
+        <StoryPanel />
+        <div className="my-4">
+          <PostUploader onUpload={handleNewPost} />
+        </div>
 
-      <Navbar />
-      <div className="p-4 max-w-xl mx-auto">
-        <StoryBar />
+        {posts.length === 0 && (
+          <p className="text-center text-gray-500 mt-10">هیچ پستی هنوز ثبت نشده...</p>
+        )}
 
-        {mockPosts.map((post) => (
-          <div key={post.id} className="mb-4 bg-white shadow rounded p-3">
-            <img src={post.image} alt="post" className="rounded mb-2" />
-            <h3 className="font-semibold">{post.author}</h3>
-            <p className="mb-2">{post.content}</p>
+        {posts.map((post) => (
+          <div key={post.id} className="mb-6">
+            <PostCard
+              post={post}
+              onLike={() => handleLike(post.id)}
+              onDislike={() => handleDislike(post.id)}
+              onComment={(id, text) => handleComment(id, text)}
+              onSendMeme={() => handleSendMeme(post.id)}
+            />
 
-            <div className="flex gap-2 flex-wrap text-sm">
-              <button onClick={() => handleLike(post.id)}>👍 Like</button>
-              <button onClick={() => handleDislike(post.id)}>👎 Dislike</button>
-              <button onClick={() => handleSave(post.id)}>💾 Save</button>
-              <button onClick={() => handleShare(post.id)}>🔁 Share</button>
-              <button onClick={() => handleReport(post.id)}>🚩 Report</button>
+            {memePowers[post.id] && (
+              <p className="text-sm text-green-700 font-semibold px-2 mt-1">
+                ⚡ قدرت Meme: {memePowers[post.id].toFixed(1)}
+              </p>
+            )}
+
+            {comments[post.id] && comments[post.id].length > 0 && (
+              <div className="mt-2 text-sm text-gray-700 px-2">
+                <div className="font-semibold mb-1">💬 {comments[post.id].length} کامنت</div>
+                <ul className="space-y-1">
+                  {comments[post.id].map((c, idx) => (
+                    <li key={idx} className="border-l-2 border-blue-400 pl-2">{c}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="mt-3 flex gap-2 px-2">
+              <input
+                type="text"
+                placeholder="نظر خود را بنویسید..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleComment(post.id, e.target.value);
+                }}
+                className="flex-1 px-3 py-1 border border-gray-300 rounded text-sm"
+              />
             </div>
           </div>
         ))}
+
+        {rewardMessage && (
+          <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg z-50 animate-bounce">
+            {rewardMessage}
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default UserFeed;
 
 

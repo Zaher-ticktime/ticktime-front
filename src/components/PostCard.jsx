@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
@@ -98,6 +99,9 @@ const PostCard = ({ post, onComment, onLike, onDislike, onSendMeme }) => {
       username: user.uid,
       text: post.text,
       image: post.image,
+      video: post.video,
+      fileType: post.fileType,
+      fileUrl: post.fileUrl,
       sharedFrom: post.username,
       createdAt: serverTimestamp(),
     });
@@ -113,14 +117,27 @@ const PostCard = ({ post, onComment, onLike, onDislike, onSendMeme }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm border">
+    <div className="bg-white p-4 rounded-xl shadow-sm border text-black">
       <p className="text-sm font-bold text-blue-600">@{post.username}</p>
       {post.sharedFrom && (
         <p className="text-xs text-gray-500 mb-1">🔁 Shared from @{post.sharedFrom}</p>
       )}
-      {post.image && (
+
+      {/* Media Section */}
+      {post.fileType === "image" && post.fileUrl && (
+        <img src={post.fileUrl} alt="Post" className="w-full h-auto rounded mt-2 mb-2" />
+      )}
+      {post.fileType === "video" && post.fileUrl && (
+        <video src={post.fileUrl} controls className="w-full h-auto rounded mt-2 mb-2" />
+      )}
+
+      {post.image && !post.fileUrl && (
         <img src={post.image} alt="Post" className="w-full h-auto rounded mt-2 mb-2" />
       )}
+      {post.video && !post.fileUrl && (
+        <video src={post.video} controls className="w-full h-auto rounded mt-2 mb-2" />
+      )}
+
       <p className="text-sm text-gray-700 mb-2">{post.text}</p>
 
       <div className="flex flex-wrap gap-4 text-xl text-gray-600 mb-2">
@@ -151,4 +168,3 @@ const PostCard = ({ post, onComment, onLike, onDislike, onSendMeme }) => {
 };
 
 export default PostCard;
-
