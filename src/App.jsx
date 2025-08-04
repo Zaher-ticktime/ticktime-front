@@ -1,7 +1,7 @@
 import React from "react";
+import { useAuth } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
-import { AuthProvider } from "./contexts/AuthContext";
 import WelcomePage from "./pages/WelcomePage";
 import TickTimeApps from "./pages/TickTimeApps";
 import Login from "./pages/Login";
@@ -49,7 +49,9 @@ import { Toaster } from 'react-hot-toast';
 
 
 export default function App() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const { currentUser } = useAuth();
+  const isLoggedIn = !!currentUser;
+
    <Toaster position="top-center" reverseOrder={false} />
   
   return (

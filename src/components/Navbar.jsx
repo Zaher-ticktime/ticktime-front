@@ -1,25 +1,18 @@
-// SmartNavbar.jsx (با اضافه شدن LuckyTICK اصلی برای کاربران وارد شده)
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 const SmartNavbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showTickMenu, setShowTickMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const isLoggedIn = !!currentUser;
 
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("tick_user"));
-    setIsLoggedIn(!!user);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("tick_user");
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    await signOut(auth);
     setShowProfileMenu(false);
     navigate("/");
   };
@@ -118,6 +111,7 @@ const SmartNavbar = () => {
   );
 };
 
-export default SmartNavbar;
+export default Navbar;
+
 
 
