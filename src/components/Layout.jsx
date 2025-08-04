@@ -1,7 +1,7 @@
 
 import React from "react";
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar"; // در صورت نیاز می‌تونی اینو حذف کنی یا نگه داری
+import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   return (
