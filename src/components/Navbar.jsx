@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 
-const SmartNavbar = () => {
+export default function Navbar() {
   const [showTickMenu, setShowTickMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
@@ -37,83 +37,79 @@ const SmartNavbar = () => {
     zIndex: 1000,
     right: 0
   };
-  export default function Navbar() {
-    return (
-  
-     <nav style={{ backgroundColor: "#111", padding: "1rem", display: "flex", alignItems: "center", gap: "1rem", position: "sticky", top: 0, zIndex: 1000 }}>
+
+  return (
+    <nav style={{ backgroundColor: "#111", padding: "1rem", display: "flex", alignItems: "center", gap: "1rem", position: "sticky", top: 0, zIndex: 1000 }}>
       <Link to="/feed" style={linkStyle}>🏠 Home</Link>
-       <Link to="/apps" style={linkStyle}>🎮 Apps</Link>
-       <Link to="/tickmarket-info" style={linkStyle}>🛍️ Market Info</Link>
-       <Link to="/cinema-info" style={linkStyle}>🎬 Cinema Info</Link>
-       <Link to="/mirror-info" style={linkStyle}>🪞 Mirror Info</Link>
-       <Link to="/chat-info" style={linkStyle}>💬 Chat Info</Link>
-       <Link to="/lucky-tick-info" style={linkStyle}>🎁 LuckyTICK Info</Link>
+      <Link to="/apps" style={linkStyle}>🎮 Apps</Link>
+      <Link to="/tickmarket-info" style={linkStyle}>🛍️ Market Info</Link>
+      <Link to="/cinema-info" style={linkStyle}>🎬 Cinema Info</Link>
+      <Link to="/mirror-info" style={linkStyle}>🪞 Mirror Info</Link>
+      <Link to="/chat-info" style={linkStyle}>💬 Chat Info</Link>
+      <Link to="/lucky-tick-info" style={linkStyle}>🎁 LuckyTICK Info</Link>
 
-       {/* TICK Dropdown */}
-       <div style={{ position: "relative" }}>
-         <span
+      {/* TICK Dropdown */}
+      <div style={{ position: "relative" }}>
+        <span
           onClick={() => {
-             setShowTickMenu(!showTickMenu);
-             setShowProfileMenu(false);
-           }}
-           style={{ ...linkStyle, cursor: "pointer" }}
-         >
-           💎 TICK Tokens ▾
-         </span>
-         {showTickMenu && (
-           <div style={dropdownStyle}>
+            setShowTickMenu(!showTickMenu);
+            setShowProfileMenu(false);
+          }}
+          style={{ ...linkStyle, cursor: "pointer" }}
+        >
+          💎 TICK Tokens ▾
+        </span>
+        {showTickMenu && (
+          <div style={dropdownStyle}>
             <Link to="/silver-info" style={linkStyle}>🥈 Silver TICK</Link>
-             <Link to="/golden-info" style={linkStyle}>🥇 Golden TICK</Link>
-             <Link to="/diamond-info" style={linkStyle}>💠 Diamond TICK</Link>
-           </div>
+            <Link to="/golden-info" style={linkStyle}>🥇 Golden TICK</Link>
+            <Link to="/diamond-info" style={linkStyle}>💠 Diamond TICK</Link>
+          </div>
         )}
-       </div>
+      </div>
 
-       {/* Avatar / Login */}
-       <div style={{ position: "relative", marginLeft: "auto" }}>
-         {!isLoggedIn ? (
-           <Link to="/login" style={linkStyle}>🔐 Login</Link>
-            ) : (
-           <>
-             <img
-               src="https://i.pravatar.cc/32"
-               alt="avatar"
-               style={{ width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", border: "2px solid white" }}
-               onClick={() => {
-                 setShowProfileMenu(!showProfileMenu);
-                 setShowTickMenu(false);
-               }}
-             />
-             {showProfileMenu && (
-               <div style={dropdownStyle}>
-                 <Link to="/profile" style={linkStyle}>👤 Profile</Link>
-                 <Link to="/wallet" style={linkStyle}>💼 Wallet</Link>
-                 <Link to="/vip-dashboard" style={linkStyle}>📊 VIP Panel</Link>
-                 <Link to="/meme-power" style={linkStyle}>⚡ Meme Power</Link>
-                 <Link to="/top-memes" style={linkStyle}>🏆 Top Memes</Link>
-                 <Link to="/submit-project" style={linkStyle}>📩 Submit Project</Link>
-                 <Link to="/myphotos" style={linkStyle}>🖼️ MyPhotos</Link>
-                 <Link to="/videos" style={linkStyle}>🎞️ Videos</Link>
-                 <Link to="/groups" style={linkStyle}>👥 Groups</Link>
-                 <Link to="/chat" style={linkStyle}>💬 Chat</Link>
-                 <Link to="/market" style={linkStyle}>🛒 Market</Link>
-                 <Link to="/cinema" style={linkStyle}>🎥 Cinema</Link>
-                 <Link to="/mirrorroom" style={linkStyle}>🪞 MirrorRoom</Link>
-                 <Link to="/lucky-tick" style={linkStyle}>🎁 LuckyTICK</Link>
-                 <button onClick={handleLogout} style={{ ...linkStyle, background: "none", border: "none", padding: 0, cursor: "pointer", color: "#f66" }}>
-                   🚪 Logout
-                 </button>
-               </div>
-             )}
-           </>
-         )}
-       </div>
-     </nav>
-   );
- );
-};
-
-export default SmartNavbar;
+      {/* Avatar / Login */}
+      <div style={{ position: "relative", marginLeft: "auto" }}>
+        {!isLoggedIn ? (
+          <Link to="/login" style={linkStyle}>🔐 Login</Link>
+        ) : (
+          <>
+            <img
+              src="https://i.pravatar.cc/32"
+              alt="avatar"
+              style={{ width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", border: "2px solid white" }}
+              onClick={() => {
+                setShowProfileMenu(!showProfileMenu);
+                setShowTickMenu(false);
+              }}
+            />
+            {showProfileMenu && (
+              <div style={dropdownStyle}>
+                <Link to="/profile" style={linkStyle}>👤 Profile</Link>
+                <Link to="/wallet" style={linkStyle}>💼 Wallet</Link>
+                <Link to="/vip-dashboard" style={linkStyle}>📊 VIP Panel</Link>
+                <Link to="/meme-power" style={linkStyle}>⚡ Meme Power</Link>
+                <Link to="/top-memes" style={linkStyle}>🏆 Top Memes</Link>
+                <Link to="/submit-project" style={linkStyle}>📩 Submit Project</Link>
+                <Link to="/myphotos" style={linkStyle}>🖼️ MyPhotos</Link>
+                <Link to="/videos" style={linkStyle}>🎞️ Videos</Link>
+                <Link to="/groups" style={linkStyle}>👥 Groups</Link>
+                <Link to="/chat" style={linkStyle}>💬 Chat</Link>
+                <Link to="/market" style={linkStyle}>🛒 Market</Link>
+                <Link to="/cinema" style={linkStyle}>🎥 Cinema</Link>
+                <Link to="/mirrorroom" style={linkStyle}>🪞 MirrorRoom</Link>
+                <Link to="/lucky-tick" style={linkStyle}>🎁 LuckyTICK</Link>
+                <button onClick={handleLogout} style={{ ...linkStyle, background: "none", border: "none", padding: 0, cursor: "pointer", color: "#f66" }}>
+                  🚪 Logout
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </nav>
+  );
+}
 
 
 
