@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-const PostUploader = ({ onUpload }) => {
+const PostUpload = ({ onUpload }) => {
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState("");
   const [showInFeed, setShowInFeed] = useState(true);
@@ -71,4 +71,4 @@ const PostUploader = ({ onUpload }) => {
   );
 };
 
-export default PostUploade
+export default PostUpload

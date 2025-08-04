@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import PostUploader from "./PostUploader";
+import PostUpload from "./PostUpload";
 import CommentModal from "./CommentModal";
 import DislikeModal from "./DislikeModal";
 import ReportModal from "./ReportModal";
@@ -192,7 +192,7 @@ const MobileFeed = () => {
   );
 };
 
-export default MobileFeedeed;
+export default MobileFeed;
 
 
 

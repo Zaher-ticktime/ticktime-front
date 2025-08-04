@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import StoryPanel from "../components/StoryPanel";
-import PostUploader from "../components/PostUploader";
+import PostUpload from "../components/PostUpload";
 import PostCard from "../components/PostCard";
 
 const UserFeed = () => {
@@ -75,7 +75,7 @@ const UserFeed = () => {
       <div className="max-w-2xl mx-auto px-4 pb-24">
         <StoryPanel />
         <div className="my-4">
-          <PostUploader onUpload={handleNewPost} />
+          <PostUpload onUpload={handleNewPost} />
         </div>
 
         {posts.length === 0 && (
