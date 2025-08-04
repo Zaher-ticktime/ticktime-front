@@ -40,7 +40,7 @@ export default function Login() {
         return;
       }
 
-      console.log("✅ Login success! Navigating to /UserFeed");
+      console.log("✅ Login success! Navigating to /Feed");
       navigate("/feed");
     } catch (err) {
       console.error("❌ Login error:", err.message);

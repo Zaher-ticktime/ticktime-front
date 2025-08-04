@@ -64,6 +64,8 @@ export default function UserFeed() {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-24">
+      <h2 className="text-xl font-bold text-gray-800 mb-4">📣 Feed Loaded</h2>
+
       <Navbar />
       <div className="p-4 max-w-xl mx-auto">
         <StoryBar />
