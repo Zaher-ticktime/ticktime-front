@@ -37,7 +37,7 @@ const UserFeed = () => {
 
     if (!rewardedComments[postId]) {
       setRewardedComments(prev => ({ ...prev, [postId]: true }));
-      setRewardMessage("🎉 شما ۲ SilverTICK بابت کامنت دریافت کردید!");
+      setRewardMessage("🎉 You earned 2 SilverTICK for commenting!");
       setTimeout(() => setRewardMessage(""), 3000);
     }
   };
@@ -45,7 +45,7 @@ const UserFeed = () => {
   const handleLike = (postId) => {
     if (!likedPosts[postId]) {
       setLikedPosts(prev => ({ ...prev, [postId]: true }));
-      setRewardMessage("🎉 شما ۱ SilverTICK بابت لایک دریافت کردید!");
+      setRewardMessage("🎉 You earned 1 SilverTICK for liking!");
       setTimeout(() => setRewardMessage(""), 3000);
     }
   };
@@ -53,7 +53,7 @@ const UserFeed = () => {
   const handleDislike = (postId) => {
     if (!dislikedPosts[postId]) {
       setDislikedPosts(prev => ({ ...prev, [postId]: true }));
-      setRewardMessage("👎 دیسلایک ثبت شد (بدون پاداش مگر با دلیل)");
+      setRewardMessage("👎 Dislike registered (no reward unless justified)");
       setTimeout(() => setRewardMessage(""), 3000);
     }
   };
@@ -65,7 +65,7 @@ const UserFeed = () => {
       [postId]: (prev[postId] || 0) + power
     }));
     if (reward > 0) {
-      setRewardMessage(`🧠 شما ${reward} SilverTICK بابت Meme دریافت کردید!`);
+      setRewardMessage(`🧠 You earned ${reward} SilverTICK for sending a meme!`);
       setTimeout(() => setRewardMessage(""), 3000);
     }
   };
@@ -79,7 +79,7 @@ const UserFeed = () => {
         </div>
 
         {posts.length === 0 && (
-          <p className="text-center text-gray-500 mt-10">هیچ پستی هنوز ثبت نشده...</p>
+          <p className="text-center text-gray-500 mt-10">No posts yet...</p>
         )}
 
         {posts.map((post) => (
@@ -94,13 +94,13 @@ const UserFeed = () => {
 
             {memePowers[post.id] && (
               <p className="text-sm text-green-700 font-semibold px-2 mt-1">
-                ⚡ قدرت Meme: {memePowers[post.id].toFixed(1)}
+                ⚡ Meme Power: {memePowers[post.id].toFixed(1)}
               </p>
             )}
 
             {comments[post.id] && comments[post.id].length > 0 && (
               <div className="mt-2 text-sm text-gray-700 px-2">
-                <div className="font-semibold mb-1">💬 {comments[post.id].length} کامنت</div>
+                <div className="font-semibold mb-1">💬 {comments[post.id].length} comment(s)</div>
                 <ul className="space-y-1">
                   {comments[post.id].map((c, idx) => (
                     <li key={idx} className="border-l-2 border-blue-400 pl-2">{c}</li>
@@ -112,7 +112,7 @@ const UserFeed = () => {
             <div className="mt-3 flex gap-2 px-2">
               <input
                 type="text"
-                placeholder="نظر خود را بنویسید..."
+                placeholder="Write a comment..."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleComment(post.id, e.target.value);
                 }}
