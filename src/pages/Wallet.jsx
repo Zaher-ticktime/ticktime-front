@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { collection, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import Navbar from "../components/Navbar";
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
+import Button from "@/components/Ui/button";
+import Input from "@/components/Ui/input";
 import { useNavigate } from "react-router-dom";
 
 export default function Wallet() {
