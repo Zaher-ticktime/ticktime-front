@@ -1,7 +1,7 @@
 import React from "react";
 import { usePurchaseHistory } from "@/stores/purchaseHistory";
 import { Card, CardContent } from "@/components/Ui/card";
-import  Badge from "../components/ui/Badge"; // ✅ این حتماً کار می‌کنه
+import  Badge from "../components/Ui/Badge"; // ✅ این حتماً کار می‌کنه
 
 
 
