@@ -29,20 +29,22 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    console.log("🚀 Submitting login:", form);
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
       const user = userCredential.user;
 
       if (!user.emailVerified) {
-        setError("⚠️ Please verify your email before logging in.");
+        setError("⛔ لطفاً ابتدا ایمیل خود را تأیید کنید.");
         return;
       }
 
-      navigate("/UserFeed"); 
+      console.log("✅ Login success! Navigating to /feed");
+      navigate("/feed");
     } catch (err) {
-      console.error("Login error:", err.message);
-      setError("❌ " + err.message);
+      console.error("❌ Login error:", err.message);
+      setError("❌ خطا در ورود: " + err.message);
     }
   };
 
@@ -97,5 +99,6 @@ export default function Login() {
     </div>
   );
 }
+
 
 
